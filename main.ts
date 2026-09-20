@@ -8,6 +8,7 @@ input.onPinPressed(TouchPin.P0, function () {
         if (Inserite == 3) {
             if (Tentativo == PIN) {
                 Stato = 0
+                radio.sendNumber(0)
                 basic.showIcon(IconNames.Yes)
                 Tentativo = 0
                 Inserite = 0
@@ -24,12 +25,12 @@ input.onGesture(Gesture.Shake, function () {
         Conto_Alla_Rovescia = 5
         while (Conto_Alla_Rovescia > 0 && Stato == 0) {
             basic.showNumber(Conto_Alla_Rovescia)
-            music.play(music.tonePlayable(262, music.beat(BeatFraction.Quarter)), music.PlaybackMode.UntilDone)
             basic.pause(1000)
             Conto_Alla_Rovescia += -1
         }
         if (Stato == 2) {
             Stato = 3
+            radio.sendNumber(99)
         }
     }
 })
@@ -68,6 +69,9 @@ input.onButtonPressed(Button.AB, function () {
             `)
     }
 })
+radio.onReceivedString(function (receivedString) {
+	
+})
 input.onPinPressed(TouchPin.P1, function () {
     if (Stato == 2 || Stato == 3) {
         Tentativo = Tentativo * 10 + 2
@@ -93,9 +97,16 @@ let Inserite = 0
 let Tentativo = 0
 let PIN = 0
 let Stato = 0
+radio.setGroup(1)
 Stato = 0
 PIN = 123
 let Cifra_Corrente = 0
+basic.forever(function () {
+    if (receivedString == "Stop Allarme") {
+        music.stopAllSounds()
+        basic.clearScreen()
+    }
+})
 basic.forever(function () {
     if (Stato == 3) {
         basic.showIcon(IconNames.Square)
