@@ -70,7 +70,11 @@ input.onButtonPressed(Button.AB, function () {
     }
 })
 radio.onReceivedString(function (receivedString) {
-	
+    if (receivedString == "Stop Allarme") {
+        Stato = 0
+        music.stopAllSounds()
+        basic.clearScreen()
+    }
 })
 input.onPinPressed(TouchPin.P1, function () {
     if (Stato == 2 || Stato == 3) {
@@ -101,12 +105,6 @@ radio.setGroup(1)
 Stato = 0
 PIN = 123
 let Cifra_Corrente = 0
-basic.forever(function () {
-    if (receivedString == "Stop Allarme") {
-        music.stopAllSounds()
-        basic.clearScreen()
-    }
-})
 basic.forever(function () {
     if (Stato == 3) {
         basic.showIcon(IconNames.Square)
